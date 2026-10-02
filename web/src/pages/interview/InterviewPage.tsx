@@ -38,6 +38,7 @@ export default function InterviewPage() {
   const connectionLostTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [micMuted, setMicMuted] = useState(false);
   const micMutedRef = useRef(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   // Fetch candidate info
   useEffect(() => {
@@ -48,7 +49,10 @@ export default function InterviewPage() {
         setSessionId(res.data.session_id);
         if (res.data.session_status === "ended") setInterviewState("complete");
       })
-      .catch(() => setInterviewState("complete"));
+      .catch((err) => {
+        if (err.response?.status === 404) setErrorMsg("Invalid or expired interview link.");
+        else setErrorMsg("Failed to connect to server. Please check your internet connection.");
+      });
   }, [token]);
 
   const muteRef = useRef<(() => void) | null>(null);
@@ -161,9 +165,14 @@ export default function InterviewPage() {
 
   const startInterview = useCallback(async () => {
     if (!sessionId) return;
+    try {
+      await startCapture();
+    } catch (err) {
+      setErrorMsg("Microphone access is required to start the interview. Please check your browser permissions.");
+      return;
+    }
     setInterviewState("connecting");
     connect();
-    await startCapture();
     // Start muted — only unmute when backend sends speaker_changed: candidate.
     // This prevents mic audio from being sent during AI speech, since separate
     // AudioContexts for capture/playback break the browser's echo cancellation.
@@ -186,6 +195,18 @@ export default function InterviewPage() {
       : connectionState === "connected"
       ? "connected"
       : "reconnecting";
+
+  if (errorMsg) {
+    return (
+      <div className="max-w-xl mx-auto px-4 py-16 text-center space-y-4">
+        <div className="text-4xl">⚠️</div>
+        <h2 className="text-xl font-semibold">Cannot Start Interview</h2>
+        <div className="bg-destructive/10 text-destructive border border-destructive/20 p-4 rounded-lg text-sm max-w-sm mx-auto">
+          {errorMsg}
+        </div>
+      </div>
+    );
+  }
 
   // ── State A: Pre-start ──────────────────────────────────────────────────
   if (interviewState === "idle") {
