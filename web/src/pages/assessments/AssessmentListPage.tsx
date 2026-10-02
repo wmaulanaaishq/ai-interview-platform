@@ -27,17 +27,57 @@ function SessionSummary({ session }: { session?: Assessment["latest_session"] })
   return <span className="text-xs text-muted-foreground">Awaiting candidate</span>;
 }
 
+const DEMO_ASSESSMENTS: Assessment[] = [
+  {
+    id: 1,
+    name: "Senior Frontend Engineer (React/TypeScript)",
+    time_limit_min: 30,
+    language: "id",
+    created_at: new Date().toISOString(),
+    latest_session: {
+      status: "active",
+      end_reason: null,
+    },
+  },
+  {
+    id: 2,
+    name: "Fullstack Product Engineer (Monozukuri)",
+    time_limit_min: 45,
+    language: "en",
+    created_at: new Date(Date.now() - 86400000).toISOString(),
+    latest_session: {
+      status: "ended",
+      end_reason: "completed",
+    },
+  },
+  {
+    id: 3,
+    name: "Junior Web Developer & UI Designer",
+    time_limit_min: 20,
+    language: "id",
+    created_at: new Date(Date.now() - 172800000).toISOString(),
+    latest_session: {
+      status: "pending",
+      end_reason: null,
+    },
+  },
+];
+
 export default function AssessmentListPage() {
   const [assessments, setAssessments] = useState<Assessment[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const [isDemoMode, setIsDemoMode] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     assessmentsApi
       .list()
       .then((res) => setAssessments(res.data.assessments))
-      .catch(() => setError(true))
+      .catch(() => {
+        // Fallback ke data demo untuk eksplorasi UI
+        setIsDemoMode(true);
+        setAssessments(DEMO_ASSESSMENTS);
+      })
       .finally(() => setLoading(false));
   }, []);
 
@@ -50,9 +90,9 @@ export default function AssessmentListPage() {
         </Button>
       </div>
 
-      {error && (
-        <div className="border border-destructive/40 rounded-lg p-4 text-sm text-destructive">
-          Failed to load assessments. Please refresh the page.
+      {isDemoMode && (
+        <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-3 text-xs text-amber-600 dark:text-amber-400 flex items-center justify-between">
+          <span>⚡ <strong>Mode Demo Aktif:</strong> Server backend offline, menampilkan data preview untuk evaluasi UI/UX.</span>
         </div>
       )}
 
