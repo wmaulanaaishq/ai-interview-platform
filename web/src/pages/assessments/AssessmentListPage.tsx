@@ -100,14 +100,14 @@ export default function AssessmentListPage() {
         />
       </div>
 
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
           <h1 className="text-lg font-bold">Eksplor Asesmen Kandidat 👍🏼</h1>
           <p className="text-xs text-muted-foreground">
             Daftar modul wawancara AI berdasarkan kompetensi B7 Skill Taxonomy
           </p>
         </div>
-        <Button onClick={() => navigate("/assessments/new")} className="bg-primary hover:bg-primary/90 font-semibold">
+        <Button onClick={() => navigate("/assessments/new")} className="bg-primary hover:bg-primary/90 font-semibold w-full sm:w-auto">
           <Plus className="h-4 w-4 mr-1.5" /> New Assessment
         </Button>
       </div>
