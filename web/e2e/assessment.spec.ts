@@ -20,13 +20,13 @@ test.describe('Assessment Form - LevelRadio DOM Collision Fix', () => {
     await page.getByRole('button', { name: /Add Custom Skill/i }).click();
     
     // Fill first skill label
-    await page.locator('input[placeholder="e.g. React.js, Negotiation"]').first().fill('Skill A');
+    await page.locator('input[placeholder="e.g. Communication"]').first().fill('Skill A');
 
     // 2. Add second skill
     await page.getByRole('button', { name: /Add Custom Skill/i }).click();
     
     // Fill second skill label
-    await page.locator('input[placeholder="e.g. React.js, Negotiation"]').nth(1).fill('Skill B');
+    await page.locator('input[placeholder="e.g. Communication"]').nth(1).fill('Skill B');
 
     // 3. The BUG (before fix): Clicking Level 3 on Skill B would actually select Level 3 on Skill A
     
