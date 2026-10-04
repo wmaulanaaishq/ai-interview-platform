@@ -31,16 +31,16 @@ test.describe('Assessment Form - LevelRadio DOM Collision Fix', () => {
     // 3. The BUG (before fix): Clicking Level 3 on Skill B would actually select Level 3 on Skill A
     
     // Select "L3" for Skill B
-    // We locate the second skill card (Skill B) and click its L3 radio button
-    const skillBGroup = page.locator('.space-y-4 > div').nth(1);
-    await skillBGroup.getByRole('radio', { name: 'L3', exact: true }).click();
+    // We locate the skill card containing the text "Skill B"
+    const skillBCard = page.locator('.border.bg-card', { hasText: 'Skill B' });
+    await skillBCard.getByRole('radio', { name: 'L3', exact: true }).click();
 
     // 4. Verification
     // Verify Skill B's L3 radio is checked
-    await expect(skillBGroup.getByRole('radio', { name: 'L3', exact: true })).toBeChecked();
+    await expect(skillBCard.getByRole('radio', { name: 'L3', exact: true })).toBeChecked();
 
     // Verify Skill A's L3 radio is NOT checked (which proves collision is fixed!)
-    const skillAGroup = page.locator('.space-y-4 > div').nth(0);
-    await expect(skillAGroup.getByRole('radio', { name: 'L3', exact: true })).not.toBeChecked();
+    const skillACard = page.locator('.border.bg-card', { hasText: 'Skill A' });
+    await expect(skillACard.getByRole('radio', { name: 'L3', exact: true })).not.toBeChecked();
   });
 });
