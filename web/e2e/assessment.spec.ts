@@ -6,6 +6,7 @@ test.describe('Assessment Form - LevelRadio DOM Collision Fix', () => {
     // Login menggunakan kredensial asli
     await page.goto('/login');
     await page.fill('input[type="email"]', 'admin@rakamin.com');
+    await page.click('button:has-text("Masuk dengan kata sandi")');
     await page.fill('input[type="password"]', 'password');
     await page.click('button[type="submit"]');
     await page.waitForURL('**/assessments');

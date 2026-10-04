@@ -23,6 +23,10 @@ test.describe('Login Page Visual & Auth Flow', () => {
 
     // Tulis email
     await page.fill('input[type="email"]', 'admin@rakamin.com');
+    
+    // Buka form password
+    await page.click('button:has-text("Masuk dengan kata sandi")');
+    
     // Tulis password
     await page.fill('input[type="password"]', 'password');
 

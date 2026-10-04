@@ -135,10 +135,7 @@ export default function LoginPage() {
                 variant="outline"
                 className="w-full h-10 font-semibold text-xs text-foreground border-border"
                 onClick={() => {
-                  const demoToken = "demo-assessor-token";
-                  saveToken(demoToken);
-                  setAuth({ token: demoToken });
-                  navigate("/assessments");
+                  alert("Google login is not available in this demo environment.");
                 }}
               >
                 <svg className="w-4 h-4 mr-2" viewBox="0 0 24 24">
