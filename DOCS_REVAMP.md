@@ -11,6 +11,9 @@ This document provides a detailed log of all modifications made to the codebase 
 | **FIX-01** | `web/src/pages/vacancies/VacancyListPage.tsx` | P1 | UI/UX Bug | Resolved simultaneous rendering of error banner and empty state. |
 | **FIX-02** | `web/src/components/assessment/LevelRadio.tsx` | P0 | Core Interaction | Eliminated cross-row DOM radio collision using React `useId()`. |
 | **FIX-03** | `web/src/pages/interview/InterviewPage.tsx` | P0 | Fault Handling | Graceful error UI for invalid links & mic rejection instead of false completion. |
+| **FIX-04** | `api/app/services/fit_gap/engine.rb` | P0 | Crash Bug | Added nil-guard for candidate_level to prevent NoMethodError during delta calculation. |
+| **FIX-05** | Multiple Frontend Files | P2 | Theming | Replaced hardcoded bg-white with bg-background/bg-card to fix Dark Mode. |
+| **TEST-01**| `api/spec/services/fit_gap/engine_spec.rb` | P2 | Test Coverage | Added RSpec tests with seeded fault scenario for nil candidate_level. |
 | **DX-01** | `web/src/pages/auth/LoginPage.tsx` & `api.ts` | P2 | Dev Experience | Added demo mode bypass to unblock local UI exploration. |
 | **DX-02** | `web/src/pages/assessments/AssessmentListPage.tsx` | P2 | Dev Experience | Added realistic fallback demo assessments when API is offline. |
 | **DX-03** | `api/docker-compose.yml` & `Dockerfile.dev` | P2 | Tooling | Containerized local environment for backend services. |
@@ -51,6 +54,23 @@ This document provides a detailed log of all modifications made to the codebase 
 * **Trade-off:**
   - *Option A:* Redirect candidate to an external error page (`/404`). (Disorients candidate and loses layout context).
   - *Option B (Chosen):* Render an inline error boundary block within the candidate layout. (Maintains visual continuity and provides clear guidance).
+
+---
+
+### 4. FIX-04: FitGap Engine Nil Crash (P0)
+* **File:** [`api/app/services/fit_gap/engine.rb`](file:///d:/PORTO/ai-interview-platform/api/app/services/fit_gap/engine.rb)
+* **Problem:** If a skill is added to a portfolio but hasn't received an AI evaluation yet (`effective_level` is `nil`), the delta calculation (`candidate_level - expected_level`) crashes with a fatal `NoMethodError`.
+* **Solution:** Added a nil-guard before the arithmetic operation. If `candidate_level` is nil, it sets `result = 'not_assessed'`.
+* **Trade-off:**
+  - *Option A (Chosen):* Return `'not_assessed'`. (Honest, maintains data integrity).
+  - *Option B:* Fallback to `candidate_level = 0`. (Falsely penalizes candidate with a massive "gap" for a skill they simply weren't asked about).
+
+---
+
+### 5. FIX-05: Dark Mode Overhaul (P2)
+* **Files:** `AssessorLayout.tsx`, `CandidateLayout.tsx`, `SkillCard.tsx`, `InterviewPage.tsx`
+* **Problem:** Layouts and cards had hardcoded `bg-white` classes, causing glaring white blocks when users toggled Dark Mode.
+* **Solution:** Replaced `bg-white` with Tailwind's semantic `bg-background` and `bg-card` classes.
 
 ---
 
