@@ -73,10 +73,8 @@ export default function AssessmentListPage() {
     assessmentsApi
       .list()
       .then((res) => setAssessments(res.data.assessments))
-      .catch(() => {
-        // Fallback ke data demo untuk eksplorasi UI
-        setIsDemoMode(true);
-        setAssessments(DEMO_ASSESSMENTS);
+      .catch((err) => {
+        console.error("Failed to fetch assessments", err);
       })
       .finally(() => setLoading(false));
   }, []);
@@ -112,11 +110,7 @@ export default function AssessmentListPage() {
         </Button>
       </div>
 
-      {isDemoMode && (
-        <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-3 text-xs text-amber-700 dark:text-amber-400 flex items-center justify-between">
-          <span>⚡ <strong>Mode Demo Aktif:</strong> Server backend offline, menampilkan data preview untuk evaluasi UI/UX.</span>
-        </div>
-      )}
+
 
       {loading ? (
         <div className="space-y-2">

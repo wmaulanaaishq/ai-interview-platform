@@ -153,23 +153,6 @@ export default function LoginPage() {
           </form>
         </div>
 
-        {/* Demo Bypass Helper */}
-        <div className="mt-4 text-center">
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            className="w-full text-xs border-primary/30 text-primary hover:bg-primary/5"
-            onClick={() => {
-              const demoToken = "demo-assessor-token";
-              saveToken(demoToken);
-              setAuth({ token: demoToken });
-              navigate("/assessments");
-            }}
-          >
-            🚀 Masuk Mode Demo / Dev (Bypass Tanpa Backend)
-          </Button>
-        </div>
       </div>
     </div>
   );
