@@ -18,19 +18,21 @@ test.describe('Login Page Visual & Auth Flow', () => {
     await expect(sendLinkBtn).toBeVisible();
   });
 
-  test('should login using Demo Bypass without backend', async ({ page }) => {
+  test('should login successfully with valid admin credentials', async ({ page }) => {
     await page.goto('/login');
 
-    // Click the Demo Bypass button
-    const bypassBtn = page.getByRole('button', { name: /Masuk Mode Demo/i });
-    await expect(bypassBtn).toBeVisible();
-    await bypassBtn.click();
+    // Tulis email
+    await page.fill('input[type="email"]', 'admin@rakamin.com');
+    // Tulis password
+    await page.fill('input[type="password"]', 'password');
 
-    // Should navigate to assessments dashboard and show Hero banner
+    // Klik tombol submit (asumsi ada tombol 'Masuk dengan Magic Link' / 'Masuk dengan kata sandi')
+    await page.click('button[type="submit"]');
+
+    // Validasi URL berubah ke dashboard assessments
     await expect(page).toHaveURL(/\/assessments/);
-    await expect(page.getByRole('heading', { name: 'Hi Assessor, Selamat Datang!' })).toBeVisible();
     
-    // Verify Demo Mode banner is visible
-    await expect(page.locator('text=Mode Demo Aktif')).toBeVisible();
+    // Validasi banner selamat datang
+    await expect(page.getByRole('heading', { name: 'Hi Assessor, Selamat Datang!' })).toBeVisible();
   });
 });

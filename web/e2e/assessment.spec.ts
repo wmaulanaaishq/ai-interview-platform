@@ -3,11 +3,14 @@ import { test, expect } from '@playwright/test';
 test.describe('Assessment Form - LevelRadio DOM Collision Fix', () => {
   // Use a simulated logged-in state by setting the token before tests
   test.beforeEach(async ({ page }) => {
-    // Navigate to a blank page to set local storage, then to the target page
-    await page.goto('/');
-    await page.evaluate(() => {
-      localStorage.setItem('auth-token', 'demo-assessor-token');
-    });
+    // Login menggunakan kredensial asli
+    await page.goto('/login');
+    await page.fill('input[type="email"]', 'admin@rakamin.com');
+    await page.fill('input[type="password"]', 'password');
+    await page.click('button[type="submit"]');
+    await page.waitForURL('**/assessments');
+    
+    // Pergi ke halaman New Assessment
     await page.goto('/assessments/new');
   });
 
