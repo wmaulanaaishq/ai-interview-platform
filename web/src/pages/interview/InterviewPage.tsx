@@ -43,6 +43,7 @@ export default function InterviewPage() {
   // Fetch candidate info
   useEffect(() => {
     if (!token) return;
+    setErrorMsg(null);
     sessionsApi.getCandidateInfo(token)
       .then((res) => {
         setCandidateInfo(res.data);
@@ -50,8 +51,18 @@ export default function InterviewPage() {
         if (res.data.session_status === "ended") setInterviewState("complete");
       })
       .catch((err) => {
+        if (token === "demo") {
+          setCandidateInfo({
+            session_id: 999,
+            role_title: "Frontend Engineer Intern — Rakamin",
+            time_limit_min: 30,
+            session_status: "pending",
+          });
+          setSessionId(999);
+          return;
+        }
         if (err.response?.status === 404) setErrorMsg("Invalid or expired interview link.");
-        else setErrorMsg("Failed to connect to server. Please check your internet connection.");
+        else setErrorMsg("Invalid or expired interview link, or failed to connect to server.");
       });
   }, [token]);
 
@@ -212,11 +223,16 @@ export default function InterviewPage() {
   if (interviewState === "idle") {
     return (
       <div className="max-w-xl mx-auto px-4 py-8 space-y-6">
-        <div className="text-center space-y-1">
-          <h1 className="text-xl font-semibold">{candidateInfo?.role_title ?? "AI Interview"}</h1>
+        <div className="flex flex-col items-center text-center space-y-2">
+          <img
+            src="/heroillustration.png"
+            alt="Raih Karier Impian"
+            className="h-36 w-auto object-contain mb-1"
+          />
+          <h1 className="text-xl font-bold text-foreground">{candidateInfo?.role_title ?? "AI Interview"}</h1>
           {candidateInfo && (
-            <p className="text-sm text-muted-foreground">
-              {candidateInfo.time_limit_min} minutes
+            <p className="text-xs font-medium text-primary bg-primary/10 px-3 py-1 rounded-full">
+              Durasi Sesi: {candidateInfo.time_limit_min} menit
             </p>
           )}
         </div>

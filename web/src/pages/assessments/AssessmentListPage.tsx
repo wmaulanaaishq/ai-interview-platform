@@ -82,16 +82,38 @@ export default function AssessmentListPage() {
   }, []);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
+      {/* Rakamin Hero Welcome Banner (Matching app.rakamin.com/courses) */}
+      <div className="relative overflow-hidden rounded-xl bg-[#EBF5F6] dark:bg-primary/10 border border-primary/15 px-6 py-6 sm:px-8 sm:py-7 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="max-w-xl space-y-2 z-10">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#01959F]">
+            Hi Assessor, Selamat Datang!
+          </h2>
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+            Kelola asesmen kompetensi berbasis AI, pantau wawancara kandidat secara real-time, dan evaluasi laporan Fit/Gap dengan akurat sekarang!
+          </p>
+        </div>
+        <img
+          src="/bgpicturemobile.png"
+          alt="Rakamin Welcome"
+          className="h-28 sm:h-36 w-auto object-contain self-end sm:self-center -mb-6 sm:-my-7 shrink-0"
+        />
+      </div>
+
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold">Assessments</h1>
-        <Button onClick={() => navigate("/assessments/new")}>
+        <div>
+          <h1 className="text-lg font-bold">Eksplor Asesmen Kandidat 👍🏼</h1>
+          <p className="text-xs text-muted-foreground">
+            Daftar modul wawancara AI berdasarkan kompetensi B7 Skill Taxonomy
+          </p>
+        </div>
+        <Button onClick={() => navigate("/assessments/new")} className="bg-primary hover:bg-primary/90 font-semibold">
           <Plus className="h-4 w-4 mr-1.5" /> New Assessment
         </Button>
       </div>
 
       {isDemoMode && (
-        <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-3 text-xs text-amber-600 dark:text-amber-400 flex items-center justify-between">
+        <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-3 text-xs text-amber-700 dark:text-amber-400 flex items-center justify-between">
           <span>⚡ <strong>Mode Demo Aktif:</strong> Server backend offline, menampilkan data preview untuk evaluasi UI/UX.</span>
         </div>
       )}

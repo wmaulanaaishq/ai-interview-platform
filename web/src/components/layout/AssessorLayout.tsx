@@ -3,7 +3,7 @@ import { useAtomValue, useSetAtom } from "jotai";
 import { tenantAtom } from "@/stores/tenantAtom";
 import { authAtom, clearToken } from "@/stores/authAtom";
 import { Button } from "@/components/ui/button";
-import { LayoutDashboard, ClipboardList, Briefcase, LogOut } from "lucide-react";
+import { ClipboardList, Briefcase, LogOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLocation } from "react-router-dom";
 
@@ -29,10 +29,16 @@ export default function AssessorLayout() {
       {/* Top header */}
       <header className="border-b bg-background sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
-          <div className="flex items-center gap-6">
-            <Link to="/assessments" className="flex items-center gap-2">
-              <LayoutDashboard className="h-5 w-5 text-primary" />
-              <span className="font-semibold text-sm">Rakamin AI Interview</span>
+          <div className="flex items-center gap-8">
+            <Link to="/assessments" className="flex items-center gap-2.5">
+              <img
+                src="/rakamin-logo.png"
+                alt="Rakamin"
+                className="h-6 w-auto object-contain"
+              />
+              <span className="text-xs font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
+                AI Interview
+              </span>
             </Link>
             <nav className="flex items-center gap-1">
               {navItems.map(({ href, label, icon: Icon }) => (
@@ -42,7 +48,7 @@ export default function AssessorLayout() {
                   className={cn(
                     "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm transition-colors",
                     location.pathname.startsWith(href)
-                      ? "bg-primary/10 text-primary font-medium"
+                      ? "text-primary font-semibold bg-primary/5"
                       : "text-muted-foreground hover:bg-muted hover:text-foreground"
                   )}
                 >
